@@ -11,7 +11,7 @@
     "bugs": {
         "url": "https://github.com/keltroth/PasteURL/issues"
     },
-    "author": "Django Janny",
+    "author": "Django Janny (forked from Kukushi)",
     "license": "MIT",
     "icon": "images/icon.png",
     "homepage": "https://github.com/keltroth/PasteURL/blob/master/README.md",
