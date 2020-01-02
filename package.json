@@ -3,18 +3,18 @@
     "displayName": "Paste URL",
     "description": "Paste URL in Markdown/reStructuredText format",
     "version": "0.4.4",
-    "publisher": "kukushi",
+    "publisher": "keltroth",
     "repository": {
         "type": "git",
-        "url": "https://github.com/kukushi/PasteURL.git"
+        "url": "https://github.com/keltroth/PasteURL.git"
     },
     "bugs": {
-        "url": "https://github.com/kukushi/PasteURL/issues"
+        "url": "https://github.com/keltroth/PasteURL/issues"
     },
-    "author": "kukushi",
+    "author": "Django Janny",
     "license": "MIT",
     "icon": "images/icon.png",
-    "homepage": "https://github.com/kukushi/PasteURL/blob/master/README.md",
+    "homepage": "https://github.com/keltroth/PasteURL/blob/master/README.md",
     "engines": {
         "vscode": "^1.16.0"
     },
@@ -34,7 +34,7 @@
         ],
         "keybindings": [
             {
-                "key": "ctrl+alt+p",
+                "key": "ctrl+v",
                 "command": "extension.pasteURL"
             }
         ]

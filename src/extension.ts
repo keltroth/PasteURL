@@ -48,9 +48,9 @@ export class Paster {
 
         copyPaste.paste((error, content) => {
             if (content) {
-                this.generateMarkDownStyleLink(content)
+                this.generateMarkDownStyleLink(content);
             } else {
-                this.showMessage('[PasteURL]: Not a URL.')
+                this.writeToEditor(content);
             }
         })
     }
@@ -100,29 +100,31 @@ export class Paster {
         var headers = {
             "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13) AppleWebKit/604.1.38 (KHTML, like Gecko) Version/11.0 Safari/604.1.38"
         }
+
         if (!url.startsWith("http")) {
-            url = "http://" + url
+            _this.writeToEditor(url);
+        } else {
+
+            var date = new Date()
+            var seconds = date.getSeconds()
+            var padding = seconds < 10 ? '0' : ''
+            var timestamp = date.getMinutes() + ':' + padding + seconds
+            var fetchingTitle = 'Getting Title at ' + timestamp
+            var formattedLink = this.getLinkFormatter().formatLink(fetchingTitle, url)
+            _this.writeToEditor(formattedLink).then(function (result) {
+                // Editing is done async, so we need to make sure previous editing is finished
+                const stream = baseRequest(url, { headers: headers }, function (err, response) {
+                    if (err) {
+                        _this.replaceWith(fetchingTitle, 'Error Happened')
+                    }
+                })
+
+                getTitle(stream).then(title => {
+                    title = _this.processTitle(title, url)
+                    _this.replaceWith(fetchingTitle, title)
+                })
+            });
         }
-
-        var date = new Date()
-        var seconds = date.getSeconds()
-        var padding = seconds < 10 ? '0' : ''
-        var timestamp = date.getMinutes() + ':' + padding + seconds
-        var fetchingTitle = 'Getting Title at ' + timestamp
-        var formattedLink = this.getLinkFormatter().formatLink(fetchingTitle, url)
-        _this.writeToEditor(formattedLink).then(function (result) {
-            // Editing is done async, so we need to make sure previous editing is finished
-            const stream = baseRequest(url, { headers: headers }, function (err, response) {
-                if (err) {
-                    _this.replaceWith(fetchingTitle, 'Error Happened')
-                }
-            })
-
-            getTitle(stream).then(title => {
-                title = _this.processTitle(title, url)
-                _this.replaceWith(fetchingTitle, title)
-            })
-        });
     }
 
     writeToEditor(content): Thenable<boolean> {
