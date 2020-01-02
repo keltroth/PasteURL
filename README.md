@@ -22,7 +22,7 @@ One gif is worth a thousand words.
 
 For Ubuntu Linux make sure that xclip package is installed, see http://github.com/xavi-/node-copy-paste for details.
 
-- Hit `"Control + Alt + P"` (Recommended)
+- Hit `"Control + V"` (Recommended)
 - Hit `"Command + Shift + P"` and then type `Paste URL` and hit enter.
 
 Selection will be used as the title if possible.
@@ -41,8 +41,9 @@ You can change the default shortcut to whatever you like by editing the `Code > 
 
 ## Source
 
-[GitHub](https://github.com/kukushi/PasteURL)
+[GitHub](https://github.com/keltroth/PasteURL)
+This is a fork from [kukushi/PasteURL](https://github.com/kukushi/PasteURL)
 
 ## License
 
-[MIT](https://github.com/kukushi/PasteURL/blob/master/LICENSE)
+[MIT](https://github.com/keltroth/PasteURL/blob/master/LICENSE)
