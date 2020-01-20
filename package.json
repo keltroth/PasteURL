@@ -2,7 +2,7 @@
     "name": "pasteurl",
     "displayName": "Paste URL",
     "description": "Paste URL in Markdown/reStructuredText format",
-    "version": "0.4.4",
+    "version": "0.4.5",
     "publisher": "keltroth",
     "repository": {
         "type": "git",
@@ -35,7 +35,8 @@
         "keybindings": [
             {
                 "key": "ctrl+v",
-                "command": "extension.pasteURL"
+                "command": "extension.pasteURL",
+                "when": "editorTextFocus"
             }
         ]
     },

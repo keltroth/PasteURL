@@ -38,6 +38,12 @@ class RestructuredTextLinkFormatter implements ILinkFormatter {
     }
 }
 
+class NoFormatter implements ILinkFormatter {
+    formatLink(text: string, url: string): string {
+        return url;
+    }
+}
+
 export class Paster {
     private _statusBarItem: vscode.StatusBarItem;
 
@@ -69,8 +75,10 @@ export class Paster {
     getLinkFormatter() {
         if (this.getLanguage() == 'restructuredtext') {
             return new RestructuredTextLinkFormatter();
-        } else {
+        } else if (this.getLanguage() == 'markdown') {
             return new MarkdownLinkFormatter();
+        } else {
+            return new NoFormatter();
         }
     }
 
@@ -80,10 +88,20 @@ export class Paster {
         var selectedText = document.getText(selection)
         var isSelectionEmpty = selectedText.length == 0 // || selectedText == ' '
 
-        if (isSelectionEmpty) {
-            this.composeTitleAndSelection(url)
+        if (!url.startsWith("http")) {
+            if (isSelectionEmpty) {
+                this.writeToEditor(url);
+            } else {
+                vscode.window.activeTextEditor.edit((editBuilder) => {
+                    editBuilder.replace(selection, url);
+                })
+            }
         } else {
-            this.replaceSelectionWithTitleURL(selection, url)
+            if (isSelectionEmpty) {
+                this.composeTitleAndSelection(url)
+            } else {
+                this.replaceSelectionWithTitleURL(selection, url)
+            }
         }
     }
 
@@ -100,31 +118,25 @@ export class Paster {
         var headers = {
             "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13) AppleWebKit/604.1.38 (KHTML, like Gecko) Version/11.0 Safari/604.1.38"
         }
+        var date = new Date()
+        var seconds = date.getSeconds()
+        var padding = seconds < 10 ? '0' : ''
+        var timestamp = date.getMinutes() + ':' + padding + seconds
+        var fetchingTitle = 'Getting Title at ' + timestamp
+        var formattedLink = this.getLinkFormatter().formatLink(fetchingTitle, url)
+        _this.writeToEditor(formattedLink).then(function (result) {
+            // Editing is done async, so we need to make sure previous editing is finished
+            const stream = baseRequest(url, { headers: headers }, function (err, response) {
+                if (err) {
+                    _this.replaceWith(fetchingTitle, 'Error Happened')
+                }
+            })
 
-        if (!url.startsWith("http")) {
-            _this.writeToEditor(url);
-        } else {
-
-            var date = new Date()
-            var seconds = date.getSeconds()
-            var padding = seconds < 10 ? '0' : ''
-            var timestamp = date.getMinutes() + ':' + padding + seconds
-            var fetchingTitle = 'Getting Title at ' + timestamp
-            var formattedLink = this.getLinkFormatter().formatLink(fetchingTitle, url)
-            _this.writeToEditor(formattedLink).then(function (result) {
-                // Editing is done async, so we need to make sure previous editing is finished
-                const stream = baseRequest(url, { headers: headers }, function (err, response) {
-                    if (err) {
-                        _this.replaceWith(fetchingTitle, 'Error Happened')
-                    }
-                })
-
-                getTitle(stream).then(title => {
-                    title = _this.processTitle(title, url)
-                    _this.replaceWith(fetchingTitle, title)
-                })
-            });
-        }
+            getTitle(stream).then(title => {
+                title = _this.processTitle(title, url)
+                _this.replaceWith(fetchingTitle, title)
+            })
+        });
     }
 
     writeToEditor(content): Thenable<boolean> {
