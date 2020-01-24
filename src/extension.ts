@@ -177,7 +177,7 @@ export class Paster {
         if (title == undefined) {
             return url
         }
-        return title.trim()
+        return title.replace(/\|/gi, '\\\|').trim()
     }
 
     showMessage(content) {
