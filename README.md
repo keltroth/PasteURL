@@ -20,7 +20,7 @@ One gif is worth a thousand words.
 
 ## Usage
 
-For Ubuntu Linux make sure that xclip package is installed, see http://github.com/xavi-/node-copy-paste for details.
+For Ubuntu Linux make sure that xclip package is installed, see <http://github.com/xavi-/node-copy-paste> for details.
 
 - Hit `"Control + V"` (Recommended)
 - Hit `"Command + Shift + P"` and then type `Paste URL` and hit enter.
@@ -31,7 +31,7 @@ You can change the default shortcut to whatever you like by editing the `Code > 
 
 ```json
 [
-    {"key": "ctrl+alt+p", "command": "extension.pasteURL"}
+    {"key": "ctrl+v", "command": "extension.pasteURL"}
 ]
 ```
 

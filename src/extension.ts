@@ -56,7 +56,7 @@ export class Paster {
             if (content) {
                 this.generateMarkDownStyleLink(content);
             } else {
-                this.writeToEditor(content);
+                this.writeToEditor(error);
             }
         })
     }
@@ -83,6 +83,7 @@ export class Paster {
     }
 
     generateMarkDownStyleLink(url) {
+        console.log(url);
         var document = vscode.window.activeTextEditor.document
         var selection = vscode.window.activeTextEditor.selection
         var selectedText = document.getText(selection)

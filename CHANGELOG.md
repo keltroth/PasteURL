@@ -1,5 +1,12 @@
 # Change Log
 
+## [0.5.0] - 2020-07-22
+
+- Adding dependencies
+- Now using natural ctrl+v keybinding without interfering
+- Better error handling
+- Updates in .vscode tasks
+
 ## [0.4.4] - 2019-11-26
 
 - Update dependency
@@ -58,13 +65,13 @@
 
 ### Changed
 
-- The gif is highly optimized. Loading should be much faster. 
+- The gif is highly optimized. Loading should be much faster.
 
 ## [0.3.4] - 2017-04-27
 
 ### Fixed
 
-- Pasted content now can be inserted into editor in the right place rather than appended in the end. 
+- Pasted content now can be inserted into editor in the right place rather than appended in the end.
 
 ## [0.3.3] - 2017-03-30
 
@@ -118,7 +125,7 @@
 
 ### Fixed
 
-- Use a fake header to resolve authentication problem when fetching title form some URL 
+- Use a fake header to resolve authentication problem when fetching title form some URL
 
 ## [0.1.0] - 2017-03-07
 
