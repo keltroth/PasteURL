@@ -1,10 +1,10 @@
 # PasteURL
 
-`PasteURL` is a simple extension that generating Markdown or reStructuredText style link when pasting URL.
+`PasteURL` is a simple extension that generating Markdown, reStructuredText or html style link when pasting URL.
 
 ## Features
 
-A Markdown or reStructuredText inline-style link will be generated when pasting a URL into the file with corresponding active language.
+A Markdown, reStructuredText or html inline-style link will be generated when pasting a URL into the file with corresponding active language.
 
 For example, you copied the below URL:
 
