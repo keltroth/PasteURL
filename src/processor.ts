@@ -2,8 +2,11 @@ import * as cheerio from 'cheerio';
 import * as fetch from 'node-fetch';
 import { URL } from 'url';
 
+const defaultSelector = 'head > title';
+
 const sitesToProcess = new Map([
-    ['github.com', '.f4.mt-3']
+    ['github.com', {selector: '.f4.mt-3', processor: githubProcessor}],
+    ['dev.to', {selector: defaultSelector, processor: devtoProcessor}]
 ]);
 
 export async function process(href: string) {
@@ -17,9 +20,13 @@ export async function process(href: string) {
     const $ = cheerio.load(dom);
     
     const urlObject = new URL(href);
-    const selector = sitesToProcess.get(urlObject.hostname) || 'title';
+    const selector = sitesToProcess.get(urlObject.hostname).selector || defaultSelector;
 
     let title = $(selector).text();   
+
+    if (sitesToProcess.get(urlObject.hostname)) {
+        title = await sitesToProcess.get(urlObject.hostname).processor(title);
+    }
 
     if (!title) {
         return {title : href, href};
@@ -28,4 +35,12 @@ export async function process(href: string) {
     title = title.replace(/\|/gi, '\\\|').trim();
     return {title, href};
 
+}
+
+async function githubProcessor(title: string): Promise<string> {
+    return title;
+}
+
+async function devtoProcessor(title: string): Promise<string> {
+    return title.replace(/ - DEV.*/, '');
 }
