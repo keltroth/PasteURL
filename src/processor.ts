@@ -22,12 +22,10 @@ export async function process(href: string) {
     const urlObject = new URL(href);
     const site = sitesToProcess.get(urlObject.hostname);
 
-    let selector = defaultSelector;
-    let title = $(selector).text();   
+    let title = $(defaultSelector).text();
 
     if (site) {
-        selector = site.selector;
-        title = await site.processor(title);
+        title = await site.processor($(site.selector).text());
     }
     title = title.replace(/\|/gi, '\\\|').trim();
 

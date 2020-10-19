@@ -2,7 +2,7 @@
     "name": "pasteurl",
     "displayName": "Paste URL",
     "description": "Paste URL in Markdown/reStructuredText/html format with title",
-    "version": "1.0.2",
+    "version": "1.0.3",
     "publisher": "keltroth",
     "repository": {
         "type": "git",
