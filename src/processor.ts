@@ -20,19 +20,20 @@ export async function process(href: string) {
     const $ = cheerio.load(dom);
     
     const urlObject = new URL(href);
-    const selector = sitesToProcess.get(urlObject.hostname)?.selector || defaultSelector;
+    const site = sitesToProcess.get(urlObject.hostname);
 
+    let selector = defaultSelector;
     let title = $(selector).text();   
 
-    if (sitesToProcess.get(urlObject.hostname)) {
-        title = await sitesToProcess.get(urlObject.hostname).processor(title);
+    if (site) {
+        selector = site.selector;
+        title = await site.processor(title);
     }
+    title = title.replace(/\|/gi, '\\\|').trim();
 
     if (!title) {
-        return {title : href, href};
+        title = href;
     }
-
-    title = title.replace(/\|/gi, '\\\|').trim();
     return {title, href};
 
 }
