@@ -20,7 +20,7 @@ export async function process(href: string) {
     const $ = cheerio.load(dom);
     
     const urlObject = new URL(href);
-    const selector = sitesToProcess.get(urlObject.hostname).selector || defaultSelector;
+    const selector = sitesToProcess.get(urlObject.hostname)?.selector || defaultSelector;
 
     let title = $(selector).text();   
 
