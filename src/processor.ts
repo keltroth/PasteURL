@@ -5,7 +5,7 @@ import { URL } from 'url';
 const defaultSelector = 'head > title';
 
 const sitesToProcess = new Map([
-    ['github.com', {selector: '.f4.mt-3', processor: githubProcessor}],
+    ['github.com', {selector: '.f4.mt-3', processor: defaultProcessor}],
     ['dev.to', {selector: defaultSelector, processor: devtoProcessor}]
 ]);
 
@@ -26,20 +26,40 @@ export async function process(href: string) {
 
     if (site) {
         title = await site.processor($(site.selector).text());
+    } else {
+        title = await defaultProcessor(title);
     }
-    title = title.replace(/\|/gi, '\\\|').trim();
+    title = await title.replace(/\|/gi, '\\\|').trim();
+
+    let outHref = await cleanHref(urlObject);
 
     if (!title) {
-        title = href;
+        title = outHref;
     }
-    return {title, href};
+    return {title, href: outHref};
 
 }
 
-async function githubProcessor(title: string): Promise<string> {
+async function defaultProcessor(title: string): Promise<string> {
     return title;
 }
 
 async function devtoProcessor(title: string): Promise<string> {
     return title.replace(/ - DEV.*/, '');
+}
+
+async function cleanHref(url): Promise<string> {
+
+    const paramsToRemove = [
+        'utm_campaign',
+        'utm_source',
+        'utm_medium',
+        'utm_term'
+    ];
+
+    for (let param of paramsToRemove) {
+        url.searchParams.delete(param);
+    }
+
+    return url.href;
 }
