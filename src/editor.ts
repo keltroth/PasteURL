@@ -34,7 +34,7 @@ export function replace(originalContent: string, newContent: string) {
         const newRange = new vscode.Range(start, end);
         editBuilder.replace(newRange, newContent);
 
-        const vsEditor = vscode.window.activeTextEditor;        
+        const vsEditor = vscode.window.activeTextEditor;
         const position = vsEditor.selection.active;
 
         const newPosition = position.with(position.line, 0);
